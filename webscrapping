@@ -1,0 +1,40 @@
+pip install html5lib lxml beautifulsoup4
+import requests
+import pandas as pd
+from bs4 import BeautifulSoup
+url = "https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(nominal)"
+headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                  "AppleWebKit/537.36 (KHTML, like Gecko) "
+                  "Chrome/122.0.0.0 Safari/537.36"
+}
+#Step 3: Fetch the webpage content
+response = requests.get(url, headers=headers)
+response.raise_for_status()  #ensure the request was successful
+
+#Step 4: Parse HTML with BeautifulSoup
+soup = BeautifulSoup(response.text, "lxml")
+
+#Step 5: Locate the main table (Wikipedia tables have class 'wikitable')
+table = soup.find("table", {"class": "wikitable"})
+
+#Step 6: Extract rows
+rows = []
+for row in table.find_all("tr"):
+    cells = [cell.get_text(strip=True) for cell in row.find_all(["th", "td"])]
+    rows.append(cells)
+
+#Step 7: Convert to a DataFrame
+df = pd.DataFrame(rows[1:], columns=rows[0])
+
+#Step 8: Clean up column names and data
+df.columns = [col.replace("\n", " ").strip() for col in df.columns]
+df = df.dropna(subset=[df.columns[1]])  # drop empty rows
+
+# Step 9: Display as table output
+print("✅ Successfully extracted table:\n")
+print(df.head(10).to_string(index=False))
+
+# Step 10: Save to CSV
+df.to_csv("countries_gdp_dataset.csv", index=False)
+print("\n Data saved as 'countries_gdp_dataset.csv'")
