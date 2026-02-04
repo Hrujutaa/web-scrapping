@@ -32,7 +32,7 @@ df.columns = [col.replace("\n", " ").strip() for col in df.columns]
 df = df.dropna(subset=[df.columns[1]])  # drop empty rows
 
 # Step 9: Display as table output
-print("✅ Successfully extracted table:\n")
+print("Successfully extracted table:\n")
 print(df.head(10).to_string(index=False))
 
 # Step 10: Save to CSV
