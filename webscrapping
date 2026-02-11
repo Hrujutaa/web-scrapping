@@ -38,3 +38,16 @@ print(df.head(10).to_string(index=False))
 # Step 10: Save to CSV
 df.to_csv("countries_gdp_dataset.csv", index=False)
 print("\n Data saved as 'countries_gdp_dataset.csv'")
+
+#Step 11: Data Cleaning
+df=pd.read_csv("countries_gdp_dataset.csv")
+df.head()
+df.columns=df.columns.str.replace(r"\[.*?\]", "",regex=True)
+df.columns=df.columns.str.strip()
+df["Country/Territory"]=df["Country/Territory"].str.replace(r"\[.*?\]", "",regex=True)
+df["Country/Territory"]=df["Country/Territory"].str.strip()
+df
+
+#Step 12: Check null values
+df.isna().sum()
+
