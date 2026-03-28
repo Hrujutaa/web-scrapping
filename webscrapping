@@ -2,6 +2,7 @@ pip install html5lib lxml beautifulsoup4
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
+
 url = "https://en.wikipedia.org/wiki/List_of_countries_by_GDP_(nominal)"
 headers = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
